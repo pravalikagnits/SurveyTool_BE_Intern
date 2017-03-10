@@ -128,33 +128,32 @@ public class SurveysController {
         String token = request().getHeader("Authentication");
         String email = request().getHeader("id");
         Result auth = auth(token, email);
-        if(200 == auth.status()) {
+        if (200 == auth.status()) {
 
-        final JsonNode json = request().body().asJson();
-        if (null == json) {
+            final JsonNode json = request().body().asJson();
+            if (null == json) {
 
-            return badRequest("json not found");
-        }
+                return badRequest("json not found");
+            }
 
-        if(null == id){
-            return  badRequest("id not found");
-        }
+            if (null == id) {
+                return badRequest("id not found");
+            }
 
 
-        Surveys s=Json.fromJson(json,Surveys.class);
-            if(null==s)
-            {
+            Surveys s = Json.fromJson(json, Surveys.class);
+            if (null == s) {
                 return badRequest("not found");
             }
-            Result del = deleteSurveyById(id);
-            if (OK == del.status()) {
-                jpaApi.em().persist(s);
-                return ok("updated");
-            }
-            return badRequest("can't update");
+            Surveys old = jpaApi.em().find(Surveys.class, id);
+            old.setSname(s.getSname());
+            old.setSdescription(s.getSdescription());
+            old.setDate(s.getDate());
+            jpaApi.em().merge(old);
+            return ok("updated Successfully ");
         }
-
         return unauthorized("unauthorized user");
+
     }
 
 

@@ -52,13 +52,13 @@ public class UsersController {
         return ok(json);
     }
 
+
+
     @Transactional
     public Result getUserByName(String uname){
 
-        String q = "select u from Users u where uname LIKE :uname ";
-        TypedQuery<Users> query = jpaApi.em().createQuery(q, Users.class).setParameter("uname", uname);
-        user = query.getResultList();
-        final JsonNode json = Json.toJson(user);
+        final Users users=jpaApi.em().find(Users.class,uname);
+        JsonNode json = Json.toJson(users);
 
         return ok(json);
 

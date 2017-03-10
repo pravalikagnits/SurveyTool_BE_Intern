@@ -3,6 +3,7 @@ package controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.inject.Inject;
 import models.Features;
+import models.Users;
 import play.Logger;
 import play.db.jpa.JPAApi;
 import play.db.jpa.Transactional;
@@ -13,6 +14,8 @@ import play.mvc.Result;
 import static play.mvc.Controller.request;
 import static play.mvc.Results.badRequest;
 import static play.mvc.Results.ok;
+import static play.mvc.Results.unauthorized;
+
 /**
  * Created by Admin on 2/9/2017.
  */
@@ -79,6 +82,11 @@ public class FeatureController {
 
     @Transactional
     public Result deleteFeatureById(Integer id){
+
+        String token = request().getHeader("Authentication");
+        String email = request().getHeader("id");
+        Result auth = auth(token, email);
+        if(200 == auth.status()) {
         Features f= jpaApi.em().find(Features.class,id);
         jpaApi.em().remove(f);
 
@@ -86,10 +94,21 @@ public class FeatureController {
             return badRequest("entry not available");
         }
         return ok("faeture entry deleted");
+        }
+        return unauthorized("unauthorized user");
     }
 
     @Transactional
     public Result addNewFeature(){
+
+
+        String token = request().getHeader("Authentication");
+        String uname = request().getHeader("id");
+        Result auth = auth(token, uname);
+        Logger.debug(token);
+        Logger.debug(uname);
+        Logger.debug(auth.toString());
+        if(200 == auth.status()) {
         final JsonNode json = request().body().asJson();
         if (null == json) {
             Logger.error("Unable to get json from request");
@@ -104,42 +123,64 @@ public class FeatureController {
 
         jpaApi.em().merge(f);
         return ok(json);
+        }
+        return unauthorized("unauthorized user");
     }
 
 
     @Transactional
     public Result updateFeature(Integer id) {
-        final JsonNode json = request().body().asJson();
-        if (null == json) {
+        String token = request().getHeader("Authentication");
+        String email = request().getHeader("id");
+        Result auth = auth(token, email);
+        if (200 == auth.status()) {
+            final JsonNode json = request().body().asJson();
+            if (null == json) {
 
-            return badRequest("json not found");
+                return badRequest("json not found");
+            }
+
+            if (null == id) {
+                return badRequest("id not found");
+            }
+
+
+            Features f = Json.fromJson(json, Features.class);
+            if (null == f) {
+                return badRequest("not found");
+            }
+            Features old = jpaApi.em().find(Features.class, id);
+            old.setName(f.getName());
+            old.setLatitude(f.getLatitude());
+            old.setLongitude(f.getLongitude());
+            old.setCountry(f.getCountry());
+            old.setState(f.getState());
+            old.setDistrict(f.getDistrict());
+            old.setArchstyle(f.getArchstyle());
+            old.setCreator(f.getCreator());
+            old.setDeities(f.getDeities());
+            old.setDatebuilt(f.getDatebuilt());
+            old.setEateries(f.getEateries());
+            old.setImage(f.getImage());
+            old.setGuides(f.getGuides());
+            old.setFestivals(f.getFestivals());
+            jpaApi.em().merge(old);
+            return ok("updated Successfully ");
         }
+        return unauthorized("unauthorized user");
 
-        if(null == id){
-            return  badRequest("id not found");
+    }
+
+    public Result auth(String token, String uname) {
+        final Users users = jpaApi.em().find(Users.class, uname);
+        if(null != users) {
+            JsonNode json = Json.toJson(users);
+
+            if (token.equals(json.path("token").asText())) {
+                return ok();
+            }
         }
+        return badRequest();
 
-
-        Features f=Json.fromJson(json,Features.class);
-        if(null==f)
-        {
-            return badRequest("not found");
-        }
-        Features old=jpaApi.em().find(Features.class,id);
-        old.setName(f.getName());
-        old.setLatitude(f.getLatitude());
-        old.setLongitude(f.getLongitude());
-        old.setCountry(f.getCountry());
-        old.setState(f.getState());
-        old.setDistrict(f.getDistrict());
-        old.setArchstyle(f.getArchstyle());
-        old.setCreator(f.getCreator());
-        old.setDeities(f.getDeities());
-        old.setDatebuilt(f.getDatebuilt());
-        old.setEateries(f.getEateries());
-        old.setGuides(f.getGuides());
-        old.setFestivals(f.getFestivals());
-        jpaApi.em().merge(old);
-        return ok("updated Successfully ");
     }
 }
