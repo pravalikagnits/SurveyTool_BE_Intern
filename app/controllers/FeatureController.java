@@ -132,9 +132,12 @@ public class FeatureController {
     public Result updateFeature(Integer id) {
         String token = request().getHeader("Authentication");
         String email = request().getHeader("id");
+        Logger.debug(token);
+        Logger.debug(email);
+
         Result auth = auth(token, email);
         if (200 == auth.status()) {
-            final JsonNode json = request().body().asJson();
+            JsonNode json = request().body().asJson();
             if (null == json) {
 
                 return badRequest("json not found");
@@ -149,23 +152,30 @@ public class FeatureController {
             if (null == f) {
                 return badRequest("not found");
             }
+
             Features old = jpaApi.em().find(Features.class, id);
-            old.setName(f.getName());
-            old.setLatitude(f.getLatitude());
-            old.setLongitude(f.getLongitude());
-            old.setCountry(f.getCountry());
-            old.setState(f.getState());
-            old.setDistrict(f.getDistrict());
-            old.setArchstyle(f.getArchstyle());
-            old.setCreator(f.getCreator());
-            old.setDeities(f.getDeities());
-            old.setDatebuilt(f.getDatebuilt());
-            old.setEateries(f.getEateries());
-            old.setImage(f.getImage());
-            old.setGuides(f.getGuides());
-            old.setFestivals(f.getFestivals());
-            jpaApi.em().merge(old);
-            return ok("updated Successfully ");
+            Logger.debug(old.getUname());
+            if(old.getUname().equals(email)) {
+                old.setName(f.getName());
+                old.setLatitude(f.getLatitude());
+                old.setLongitude(f.getLongitude());
+                old.setCountry(f.getCountry());
+                old.setState(f.getState());
+                old.setDistrict(f.getDistrict());
+                old.setArchstyle(f.getArchstyle());
+                old.setCreator(f.getCreator());
+                old.setDeities(f.getDeities());
+                old.setDatebuilt(f.getDatebuilt());
+                old.setEateries(f.getEateries());
+                old.setImage(f.getImage());
+                old.setGuides(f.getGuides());
+                old.setFestivals(f.getFestivals());
+                jpaApi.em().merge(old);
+                return ok("updated Successfully ");
+            }
+            else{return unauthorized("unauthorized user");
+
+            }
         }
         return unauthorized("unauthorized user");
 
@@ -177,7 +187,7 @@ public class FeatureController {
             JsonNode json = Json.toJson(users);
 
             if (token.equals(json.path("token").asText())) {
-                return ok();
+                return ok(json.path("token").asText());
             }
         }
         return badRequest();

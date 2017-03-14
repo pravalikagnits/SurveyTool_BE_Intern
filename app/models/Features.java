@@ -50,9 +50,10 @@ public class Features {
     public Features() {
     }
 
-    public Features(int fid, String name, double latitude, double longitude, String country, String image, String state, String district, String deities, String festivals, String archstyle, String datebuilt, String creator, String tourists, String guides, String eateries) {
+    public Features(int fid,String uname, String name, double latitude, double longitude, String country, String image, String state, String district, String deities, String festivals, String archstyle, String datebuilt, String creator, String tourists, String guides, String eateries) {
         this.fid = fid;
         this.name = name;
+        this.uname=uname;
         this.latitude = latitude;
         this.longitude = longitude;
         this.country = country;
