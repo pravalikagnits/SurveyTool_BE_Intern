@@ -173,6 +173,25 @@ public class FeatureController {
                 jpaApi.em().merge(old);
                 return ok("updated Successfully ");
             }
+            else if(email.equals("admin")){
+                old.setName(f.getName());
+                old.setLatitude(f.getLatitude());
+                old.setLongitude(f.getLongitude());
+                old.setCountry(f.getCountry());
+                old.setState(f.getState());
+                old.setDistrict(f.getDistrict());
+                old.setArchstyle(f.getArchstyle());
+                old.setCreator(f.getCreator());
+                old.setDeities(f.getDeities());
+                old.setDatebuilt(f.getDatebuilt());
+                old.setEateries(f.getEateries());
+                old.setImage(f.getImage());
+                old.setGuides(f.getGuides());
+                old.setFestivals(f.getFestivals());
+                jpaApi.em().merge(old);
+                return ok("updated Successfully ");
+
+            }
             else{return unauthorized("unauthorized user");
 
             }
