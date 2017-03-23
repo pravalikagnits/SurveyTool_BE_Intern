@@ -162,14 +162,9 @@ public class FeatureController {
                 old.setCountry(f.getCountry());
                 old.setState(f.getState());
                 old.setDistrict(f.getDistrict());
-                old.setArchstyle(f.getArchstyle());
-                old.setCreator(f.getCreator());
-                old.setDeities(f.getDeities());
-                old.setDatebuilt(f.getDatebuilt());
-                old.setEateries(f.getEateries());
+                old.setLandmark(f.getLandmark());
                 old.setImage(f.getImage());
-                old.setGuides(f.getGuides());
-                old.setFestivals(f.getFestivals());
+                old.setOthers(f.getOthers());
                 jpaApi.em().merge(old);
                 return ok("updated Successfully ");
             }
@@ -180,14 +175,9 @@ public class FeatureController {
                 old.setCountry(f.getCountry());
                 old.setState(f.getState());
                 old.setDistrict(f.getDistrict());
-                old.setArchstyle(f.getArchstyle());
-                old.setCreator(f.getCreator());
-                old.setDeities(f.getDeities());
-                old.setDatebuilt(f.getDatebuilt());
-                old.setEateries(f.getEateries());
+                old.setLandmark(f.getLandmark());
                 old.setImage(f.getImage());
-                old.setGuides(f.getGuides());
-                old.setFestivals(f.getFestivals());
+                old.setOthers(f.getOthers());
                 jpaApi.em().merge(old);
                 return ok("updated Successfully ");
 

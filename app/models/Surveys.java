@@ -9,6 +9,7 @@ import java.util.List;
 public class Surveys {
     @Id
     @GeneratedValue
+    @Column(name="sid")
     private int sid;
 
     @Basic
@@ -19,6 +20,10 @@ public class Surveys {
 
     @Basic
     private String date;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="sid", referencedColumnName = "sid")
+    private List<Features> features;
 
 
 
@@ -90,6 +95,14 @@ public class Surveys {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public List<Features> getFeatures() {
+        return features;
+    }
+
+    public void setFeatures(List<Features> features) {
+        this.features = features;
     }
 
 //    public List<Users> getUsers1() {

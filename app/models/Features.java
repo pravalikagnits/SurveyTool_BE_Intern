@@ -12,6 +12,9 @@ public class Features {
     @Column(name="uname")
     private String uname;
 
+    @Column(name="sid")
+    private Integer sid;
+
 
     @Id
     @GeneratedValue
@@ -31,26 +34,18 @@ public class Features {
     @Basic
     private String district;
     @Basic
-    private String deities;
-    @Basic
-    private String festivals;
-    @Basic
-    private String archstyle;
-    @Basic
-    private String datebuilt;
-    @Basic
-    private String creator;
+    private String landmark;
+
     @Basic
     private String image;
+
     @Basic
-    private String guides;
-    @Basic
-    private String eateries;
+    private String others;
 
     public Features() {
     }
 
-    public Features(int fid,String uname, String name, double latitude, double longitude, String country, String image, String state, String district, String deities, String festivals, String archstyle, String datebuilt, String creator, String tourists, String guides, String eateries) {
+    public Features(int fid,String uname, String name, double latitude, double longitude, String country,String landmark, String image, String state, String district,  String others) {
         this.fid = fid;
         this.name = name;
         this.uname=uname;
@@ -59,14 +54,10 @@ public class Features {
         this.country = country;
         this.state = state;
         this.district = district;
-        this.deities = deities;
-        this.festivals = festivals;
-        this.archstyle = archstyle;
-        this.datebuilt = datebuilt;
-        this.creator = creator;
+        this.landmark= landmark;
+
         this.image = image;
-        this.guides = guides;
-        this.eateries = eateries;
+        this.others = others;
     }
 
 
@@ -126,61 +117,6 @@ public class Features {
         this.district = district;
     }
 
-    public String getDeities() {
-        return deities;
-    }
-
-    public void setDeities(String deities) {
-        this.deities = deities;
-    }
-
-    public String getFestivals() {
-        return festivals;
-    }
-
-    public void setFestivals(String festivals) {
-        this.festivals = festivals;
-    }
-
-    public String getArchstyle() {
-        return archstyle;
-    }
-
-    public void setArchstyle(String archstyle) {
-        this.archstyle = archstyle;
-    }
-
-    public String getDatebuilt() {
-        return datebuilt;
-    }
-
-    public void setDatebuilt(String datebuilt) {
-        this.datebuilt = datebuilt;
-    }
-
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator;
-    }
-
-    public String getEateries() {
-        return eateries;
-    }
-
-    public void setEateries(String eateries) {
-        this.eateries = eateries;
-    }
-
-    public String getGuides() {
-        return guides;
-    }
-
-    public void setGuides(String guides) {
-        this.guides = guides;
-    }
 
     public String getImage() {
         return image;
@@ -197,5 +133,29 @@ public class Features {
 
     public void setUname(String uname) {
         this.uname = uname;
+    }
+
+    public Integer getSid() {
+        return sid;
+    }
+
+    public void setSid(Integer sid) {
+        this.sid = sid;
+    }
+
+    public String getLandmark() {
+        return landmark;
+    }
+
+    public void setLandmark(String landmark) {
+        this.landmark = landmark;
+    }
+
+    public String getOthers() {
+        return others;
+    }
+
+    public void setOthers(String others) {
+        this.others = others;
     }
 }
